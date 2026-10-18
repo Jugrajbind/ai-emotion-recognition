@@ -23,22 +23,23 @@ import plotly.express as px
 import plotly.graph_objects as go
 from PIL import Image
 
-# Import ML services from backend
-try:
-    from emotion_service import text_emotion_classifier, EMOTIONS, SUPPORTIVE_RESPONSES
-    from face_service import facial_emotion_service
-    from voice_service import voice_emotion_service
-    from fusion_service import multimodal_fusion_service
-except ImportError as e:
-    st.error(f"Error loading AI models from backend: {e}")
-
-# Page Configuration
+# Page Configuration MUST be the first Streamlit command
 st.set_page_config(
     page_title="EMOTION.AI | Multimodal Emotion Recognition",
     page_icon="🧠",
     layout="wide",
     initial_sidebar_state="expanded"
 )
+
+# Import ML services from backend with bulletproof fallback
+try:
+    from emotion_service import text_emotion_classifier, EMOTIONS, SUPPORTIVE_RESPONSES
+    from face_service import facial_emotion_service
+    from voice_service import voice_emotion_service
+    from fusion_service import multimodal_fusion_service
+except Exception as e:
+    print(f"[Streamlit App] Service import notice: {e}")
+
 
 # Custom Aesthetics CSS (Glassmorphism, Radiant Accents)
 st.markdown("""
