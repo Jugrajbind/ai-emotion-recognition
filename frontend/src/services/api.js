@@ -3,7 +3,7 @@
  * Connects to FastAPI backend with JWT token interceptors and error handling.
  */
 
-const API_BASE = 'http://localhost:8000/api';
+const API_BASE = '/api';
 
 class ApiService {
   getToken() {
