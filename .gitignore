@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+backend/__pycache__/
+*/__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment and secrets
+.env
+.env.local
+*.log
+
+# Build artifacts
+frontend/dist/
+frontend/dist-ssr/
+*.local
+
+# Database (auto-created and seeded on startup)
+*.db
+backend/emotion_system.db
+
+# IDE and OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
