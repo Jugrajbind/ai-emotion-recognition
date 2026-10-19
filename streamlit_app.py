@@ -282,14 +282,20 @@ if selected_page == "📊 Dashboard & Analytics":
                 showlegend=False
             )
             st.plotly_chart(fig_bar, use_container_width=True)
+        else:
+            st.info("No analyses recorded yet.")
 
     # Recent Streamlit Activity Table
     st.subheader("Recent Recognition Records")
-    st.dataframe(
-        df_hist[['id', 'timestamp', 'modality', 'primary_emotion', 'confidence', 'input_preview']],
-        use_container_width=True,
-        hide_index=True
-    )
+    if not df_hist.empty:
+        history_cols = [c for c in ['id', 'timestamp', 'modality', 'primary_emotion', 'confidence', 'input_preview'] if c in df_hist.columns]
+        st.dataframe(
+            df_hist[history_cols],
+            use_container_width=True,
+            hide_index=True
+        )
+    else:
+        st.info("No recognition records recorded yet. Try running an analysis from the sidebar menu!")
 
 # ==============================================================================
 # PAGE 2: TEXT EMOTION WORKSPACE
@@ -543,17 +549,19 @@ elif selected_page == "📜 History & CSV Export":
 
     df_h = pd.DataFrame(st.session_state.history)
 
-    # Download CSV
-    csv_bytes = df_h.to_csv(index=False).encode('utf-8')
-    st.download_button(
-        label="📥 Download Official CSV Report",
-        data=csv_bytes,
-        file_name="emotion_recognition_analysis_report.csv",
-        mime="text/csv",
-        type="primary"
-    )
-
-    st.dataframe(df_h, use_container_width=True, hide_index=True)
+    if not df_h.empty:
+        # Download CSV
+        csv_bytes = df_h.to_csv(index=False).encode('utf-8')
+        st.download_button(
+            label="📥 Download Official CSV Report",
+            data=csv_bytes,
+            file_name="emotion_recognition_analysis_report.csv",
+            mime="text/csv",
+            type="primary"
+        )
+        st.dataframe(df_h, use_container_width=True, hide_index=True)
+    else:
+        st.info("History log is currently empty. Run text, facial, or voice analyses to populate the log.")
 
     if st.button("🗑️ Clear Local History"):
         st.session_state.history = []
